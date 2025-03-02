@@ -24,4 +24,23 @@ public class ProductController {
     }
 
     // You can also add PUT and DELETE methods for full CRUD operations.
+
+    // PUT: Update an existing product
+    @PutMapping("/p/{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        return productService.updateProduct(id, productDTO);  // Assuming you have this method in your service
+    }
+
+    // DELETE: Delete a product by ID
+    @DeleteMapping("/p/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);  // Assuming you have this method in your service
+
+    }
+
+    // PATCH: Partially update a product
+    @PatchMapping("/p/{id}")
+    public Product patchProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        return productService.patchProduct(id, productDTO); // Assuming you have this method in your service
+    }
 }

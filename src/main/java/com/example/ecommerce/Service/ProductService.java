@@ -113,13 +113,88 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
+    // Update an existing product
+    public Product updateProduct(Long id, ProductDTO productDTO) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+
+            // Update fields with data from DTO
+            product.setProductName(productDTO.getProductName());
+            product.setProductType(productDTO.getProductType());
+            product.setPrice(productDTO.getPrice());
+            product.setTrackingId(productDTO.getTrackingId());
+            product.setEstimatedDeliveryDate(productDTO.getEstimatedDeliveryDate());
+
+            // Save and return the updated product
+            return productRepository.save(product);
+        } else {
+            throw new RuntimeException("Product not found for id: " + id);
+        }
+    }
+
+    // Delete a product by its ID
+    public void deleteProduct(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            productRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Product not found for id: " + id);
+        }
+    }
+
+    // Method to partially update a product (PATCH)
+    public Product patchProduct(Long id, ProductDTO productDTO) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+
+            // Partially update fields with data from DTO (only update non-null fields)
+            if (productDTO.getProductName() != null) {
+                product.setProductName(productDTO.getProductName());
+            }
+            if (productDTO.getProductType() != null) {
+                product.setProductType(productDTO.getProductType());
+            }
+            if (productDTO.getPrice() != null) {
+                product.setPrice(productDTO.getPrice());
+            }
+            if (productDTO.getTrackingId() != null) {
+                product.setTrackingId(productDTO.getTrackingId());
+            }
+            if (productDTO.getEstimatedDeliveryDate() != null) {
+                product.setEstimatedDeliveryDate(productDTO.getEstimatedDeliveryDate());
+            }
+
+            // Save and return the updated product
+            return productRepository.save(product);
+        } else {
+            throw new RuntimeException("Product not found for id: " + id);
+        }
+    }
+
+
+
+    //notification in Email
     public void sendEmailNotification(Product product) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("vidhi776776@gmail.com"); // Set to a real recipient email
         message.setSubject("Product Tracking Information");
+
+        // Add product details including product type and price
+       /*message.setText("Product Name: " + product.getProductName() + "\n"
+                + "Tracking ID: " + product.getTrackingId() + "\n"
+               + "Estimated Delivery Date: " + product.getEstimatedDeliveryDate()); */
+
         message.setText("Product Name: " + product.getProductName() + "\n"
+                + "Product Type: " + product.getProductType() + "\n"
+                + "Price: " + product.getPrice() + "\n"
                 + "Tracking ID: " + product.getTrackingId() + "\n"
                 + "Estimated Delivery Date: " + product.getEstimatedDeliveryDate());
+
+        // Send the email
         mailSender.send(message);
     }
 
