@@ -37,14 +37,3 @@ This project is a Spring Boot-based microservice application designed for managi
 - **Kafka Messaging**:
     - A Kafka producer sends messages about product tracking updates, which can be consumed by other services or systems.
 
-## Configuration
-
-The application uses PostgreSQL as the database and is configured to run on the local machine. Below are the configuration details:
-
-### PostgreSQL Configuration
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/ecommerce
-spring.datasource.username=postgres
-spring.datasource.password=password
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
